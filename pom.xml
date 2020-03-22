@@ -6,29 +6,21 @@
     <parent>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-build-parent</artifactId>
-        <version>1.0.1.Final</version>
+        <version>1.3.0.Final</version>
     </parent>
 
     <groupId>io.quarkus</groupId>
     <artifactId>quarkus-ngrok-parent</artifactId>
     <name>Quarkus - Ngrok</name>
     <packaging>pom</packaging>
-    <version>1.0.1.Final</version>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <version>1.3.0.Final</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <quarkus.version>1.0.1.Final</quarkus.version>
+        <quarkus.version>1.3.0.Final</quarkus.version>
     </properties>
 
     <modules>

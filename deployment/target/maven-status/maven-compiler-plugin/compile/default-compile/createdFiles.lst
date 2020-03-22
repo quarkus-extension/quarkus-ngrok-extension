@@ -1,0 +1,4 @@
+META-INF/quarkus-javadoc.properties
+io/quarkus/ngrok/runtime/deployment/NgrokProcessor.class
+io/quarkus/ngrok/runtime/deployment/NgrokProcessor$$accessor.class
+META-INF/quarkus-build-steps.list
