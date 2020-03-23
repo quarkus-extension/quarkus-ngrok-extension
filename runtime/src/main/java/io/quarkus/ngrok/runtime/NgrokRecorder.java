@@ -19,20 +19,22 @@ public class NgrokRecorder {
 
     private static final Logger log = Logger.getLogger(NgrokRecorder.class);
 
-    public void init(String port) {
+    public void init(NgrokBuildTimeConfig ngrokBuildTimeConfig, String port) {
 
-        Thread thread = new Thread(() -> {
-            String command = "ngrok http " + port;
-            execute(command);
-            try {
-                Thread.sleep(1000);
-                logNgrokResult();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }, "ngrok-thread");
+        if (ngrokBuildTimeConfig.enabled) {
+            Thread thread = new Thread(() -> {
+                String command = "ngrok http " + port;
+                execute(command);
+                try {
+                    Thread.sleep(1000);
+                    logNgrokResult();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }, "ngrok-thread");
 
-        thread.start();
+            thread.start();
+        }
 
     }
 

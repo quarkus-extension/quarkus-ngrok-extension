@@ -1,4 +1,4 @@
-package io.quarkus.ngrok.runtime.deployment;
+package io.quarkus.ngrok.runtime;
 
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;

@@ -8,6 +8,7 @@ import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.ServiceStartBuildItem;
+import io.quarkus.ngrok.runtime.NgrokBuildTimeConfig;
 import io.quarkus.ngrok.runtime.NgrokRecorder;
 
 class NgrokProcessor {
@@ -15,8 +16,8 @@ class NgrokProcessor {
     @BuildStep
     @Record(RUNTIME_INIT)
     public void build(NgrokRecorder recorder,
-            BuildProducer<ServiceStartBuildItem> serviceStart) {
-        recorder.init(getPort());
+            BuildProducer<ServiceStartBuildItem> serviceStart, NgrokBuildTimeConfig ngrokBuildTimeConfig) {
+        recorder.init(ngrokBuildTimeConfig, getPort());
         serviceStart.produce(new ServiceStartBuildItem("ngrok"));
     }
 

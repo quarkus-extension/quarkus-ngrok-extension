@@ -1,6 +1,0 @@
-io/quarkus/ngrok/runtime/NgrokRecorder$$accessor.class
-io/quarkus/ngrok/runtime/NgrokHttpClient.class
-io/quarkus/ngrok/runtime/data/NgrokTunnelResponse.class
-io/quarkus/ngrok/runtime/data/NgrokTunnel.class
-io/quarkus/ngrok/runtime/NgrokRecorder.class
-META-INF/quarkus-javadoc.properties
