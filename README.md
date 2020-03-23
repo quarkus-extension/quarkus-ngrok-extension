@@ -12,6 +12,8 @@ For more details you can check out their [site](https://ngrok.com/).
 ### Dependency
 - maven:
 
+The ngrok extension is not available in Maven Central. For now you have to clone the repository and install the extension in your local maven repository.
+
 ```xml
 <dependency>
       <groupId>io.quarkus</groupId>
