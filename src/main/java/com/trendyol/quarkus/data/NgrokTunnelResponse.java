@@ -1,4 +1,4 @@
-package io.quarkus.ngrok.runtime.data;
+package com.trendyol.quarkus.data;
 
 import java.util.ArrayList;
 import java.util.List;
