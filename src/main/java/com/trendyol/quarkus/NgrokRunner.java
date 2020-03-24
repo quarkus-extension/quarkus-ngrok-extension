@@ -18,7 +18,6 @@ import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -42,6 +41,11 @@ public class NgrokRunner {
                 addPermissionsIfNeeded();
             }
             startupNgrok(getPort());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             logNgrokResult(ngrokConfiguration.url());
         }, "ngrok-thread");
 
@@ -59,10 +63,10 @@ public class NgrokRunner {
     }
 
     private void execute(String command) {
-        log.info("Starting ngrok");
+        log.infof("Starting process command : %s", command);
         try {
             process = Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Error occured when execute ngrok", e);
         }
     }
@@ -78,6 +82,8 @@ public class NgrokRunner {
     }
 
     private void logNgrokResult(String baseUrl) {
+
+        System.out.println(baseUrl);
         String tunnelEndpoint = baseUrl + "/api/tunnels";
         Client client = ClientBuilder.newClient();
         NgrokTunnelResponse response = client.target(tunnelEndpoint)
@@ -85,7 +91,6 @@ public class NgrokRunner {
                 .accept("application/json")
                 .get(NgrokTunnelResponse.class);
         response.getTunnels().forEach(t -> log.infof("Remote url (%s) -> %s", t.getProto(), t.getPublicUrl()));
-        client.close();
     }
 
     private boolean needToDownloadNgrok() {
