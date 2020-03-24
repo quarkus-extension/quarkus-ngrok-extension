@@ -12,4 +12,10 @@ public class NgrokBuildTimeConfig {
      */
     @ConfigItem(defaultValue = "true")
     public boolean enabled;
+
+    /**
+     * Ngrok http api url
+     */
+    @ConfigItem(defaultValue = "http://localhost:4040/")
+    public String ngrokHttpUrl;
 }

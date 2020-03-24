@@ -2,7 +2,6 @@ package io.quarkus.ngrok.runtime;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
@@ -14,9 +13,6 @@ import io.quarkus.runtime.annotations.Recorder;
 @Recorder
 public class NgrokRecorder {
 
-    @Inject
-    NgrokHttpClient ngrokHttpClient;
-
     private static final Logger log = Logger.getLogger(NgrokRecorder.class);
 
     public void init(NgrokBuildTimeConfig ngrokBuildTimeConfig, String port) {
@@ -27,7 +23,7 @@ public class NgrokRecorder {
                 execute(command);
                 try {
                     Thread.sleep(1000);
-                    logNgrokResult();
+                    logNgrokResult(ngrokBuildTimeConfig.ngrokHttpUrl);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -47,9 +43,10 @@ public class NgrokRecorder {
         }
     }
 
-    private void logNgrokResult() {
+    private void logNgrokResult(String baseUrl) {
+        String tunnelEndpoint = baseUrl + "/api/tunnels";
         Client client = ClientBuilder.newClient();
-        NgrokTunnelResponse response = client.target("http://localhost:4040/api/tunnels")
+        NgrokTunnelResponse response = client.target(tunnelEndpoint)
                 .request()
                 .accept("application/json")
                 .get(NgrokTunnelResponse.class);
