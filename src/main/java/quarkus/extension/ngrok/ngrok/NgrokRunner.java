@@ -1,8 +1,7 @@
-package quarkus.extension.ngrok;
+package quarkus.extension.ngrok.ngrok;
 
 import quarkus.extension.ngrok.configuration.NgrokConfiguration;
 import quarkus.extension.ngrok.data.NgrokTunnelResponse;
-import quarkus.extension.ngrok.ngrok.NgrokAutoDownload;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.apache.commons.io.FileUtils;
@@ -35,7 +34,6 @@ public class NgrokRunner {
 
 
     public void start(@Observes StartupEvent ev) {
-        System.out.println(ngrokConfiguration.enabled());
         if (ngrokConfiguration.enabled()) {
             Thread thread = new Thread(() -> {
                 if (needToDownloadNgrok()) {
@@ -51,9 +49,9 @@ public class NgrokRunner {
                 logNgrokResult(ngrokConfiguration.url());
             }, "ngrok-thread");
             thread.start();
+        } else {
+            log.info("Ngrok disabled");
         }
-        log.info("Ngrok disabled");
-
     }
 
     void onStop(@Observes ShutdownEvent ev) {
@@ -89,7 +87,6 @@ public class NgrokRunner {
 
     private void logNgrokResult(String baseUrl) {
 
-        System.out.println(baseUrl);
         String tunnelEndpoint = baseUrl + "/api/tunnels";
         Client client = ClientBuilder.newClient();
         NgrokTunnelResponse response = client.target(tunnelEndpoint)

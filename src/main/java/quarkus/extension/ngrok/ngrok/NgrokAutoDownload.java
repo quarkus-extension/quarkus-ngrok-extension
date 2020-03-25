@@ -1,6 +1,6 @@
 package quarkus.extension.ngrok.ngrok;
 
-import quarkus.extension.ngrok.NgrokFileExtractUtils;
+import quarkus.extension.ngrok.FileExtractUtils;
 import quarkus.extension.ngrok.configuration.NgrokConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -27,7 +27,7 @@ public class NgrokAutoDownload {
 
     public void downloadAndExtractNgrokTo(String destinationPath) {
         String downloadedFilePath = downloadNgrokTo(destinationPath);
-        NgrokFileExtractUtils.extractArchive(downloadedFilePath, destinationPath);
+        FileExtractUtils.extractArchive(downloadedFilePath, destinationPath);
     }
 
     public String downloadNgrokTo(String destinationPath) {

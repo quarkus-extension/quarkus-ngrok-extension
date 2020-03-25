@@ -15,9 +15,9 @@ import java.util.zip.ZipInputStream;
  * <p>
  * FileExtractUtils
  */
-public class NgrokFileExtractUtils {
+public class FileExtractUtils {
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokFileExtractUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(FileExtractUtils.class);
 
     /**
      * The constant BUFFER_SIZE.
