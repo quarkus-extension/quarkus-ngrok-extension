@@ -1,4 +1,4 @@
-package com.trendyol.quarkus;
+package quarkus.extension.ngrok;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

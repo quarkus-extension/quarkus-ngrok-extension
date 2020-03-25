@@ -1,4 +1,4 @@
-package com.trendyol.quarkus.data;
+package quarkus.extension.ngrok.data;
 
 import java.util.ArrayList;
 import java.util.List;

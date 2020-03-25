@@ -1,4 +1,4 @@
-package com.trendyol.quarkus.data;
+package quarkus.extension.ngrok.data;
 
 
 import javax.json.bind.annotation.JsonbProperty;

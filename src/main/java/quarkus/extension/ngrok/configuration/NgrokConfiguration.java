@@ -1,4 +1,4 @@
-package com.trendyol.quarkus.configuration;
+package quarkus.extension.ngrok.configuration;
 
 import io.quarkus.arc.config.ConfigProperties;
 import org.eclipse.microprofile.config.inject.ConfigProperty;

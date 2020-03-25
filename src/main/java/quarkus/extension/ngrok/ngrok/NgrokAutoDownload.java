@@ -1,7 +1,7 @@
-package com.trendyol.quarkus.ngrok;
+package quarkus.extension.ngrok.ngrok;
 
-import com.trendyol.quarkus.NgrokFileExtractUtils;
-import com.trendyol.quarkus.configuration.NgrokConfiguration;
+import quarkus.extension.ngrok.NgrokFileExtractUtils;
+import quarkus.extension.ngrok.configuration.NgrokConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;

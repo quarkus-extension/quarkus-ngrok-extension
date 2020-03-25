@@ -1,8 +1,8 @@
-package com.trendyol.quarkus;
+package quarkus.extension.ngrok;
 
-import com.trendyol.quarkus.configuration.NgrokConfiguration;
-import com.trendyol.quarkus.data.NgrokTunnelResponse;
-import com.trendyol.quarkus.ngrok.NgrokAutoDownload;
+import quarkus.extension.ngrok.configuration.NgrokConfiguration;
+import quarkus.extension.ngrok.data.NgrokTunnelResponse;
+import quarkus.extension.ngrok.ngrok.NgrokAutoDownload;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.apache.commons.io.FileUtils;
@@ -28,10 +28,10 @@ public class NgrokRunner {
     private Process process;
 
     @Inject
-    private  NgrokAutoDownload ngrokAutoDownload;
+    private NgrokAutoDownload ngrokAutoDownload;
 
     @Inject
-    private  NgrokConfiguration ngrokConfiguration;
+    private NgrokConfiguration ngrokConfiguration;
 
 
     public void start(@Observes StartupEvent ev) {
