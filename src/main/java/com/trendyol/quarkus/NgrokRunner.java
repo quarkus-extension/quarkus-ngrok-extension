@@ -25,15 +25,14 @@ import java.util.Objects;
 @ApplicationScoped
 public class NgrokRunner {
     private static final Logger log = Logger.getLogger(NgrokRunner.class);
-
-
-    @Inject
-    NgrokAutoDownload ngrokAutoDownload;
-
-    @Inject
-    NgrokConfiguration ngrokConfiguration;
-
     private Process process;
+
+    @Inject
+    private  NgrokAutoDownload ngrokAutoDownload;
+
+    @Inject
+    private  NgrokConfiguration ngrokConfiguration;
+
 
     public void start(@Observes StartupEvent ev) {
         System.out.println(ngrokConfiguration.enabled());
@@ -45,7 +44,7 @@ public class NgrokRunner {
                 }
                 startupNgrok(getPort());
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(ngrokConfiguration.waitTime());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

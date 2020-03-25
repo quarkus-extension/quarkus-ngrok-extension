@@ -36,4 +36,7 @@ public interface NgrokConfiguration {
 
     @ConfigProperty(name = "http.url", defaultValue = "http://localhost:4040")
     String url();
+
+    @ConfigProperty(name = "wait.time", defaultValue = "1")
+    Integer waitTime();
 }
