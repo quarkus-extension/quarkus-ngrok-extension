@@ -83,7 +83,7 @@ public class NgrokAutoDownload {
             return is64bitOS() ? ngrokConfiguration.linux64BinaryUrl() : ngrokConfiguration.linuxBinaryUrl();
         }
 
-        throw new UnsupportedOperationException("Unsupported OS.");
+        throw new UnsupportedOperationException("Unsupported OS");
     }
 
     private boolean is64bitOS() {

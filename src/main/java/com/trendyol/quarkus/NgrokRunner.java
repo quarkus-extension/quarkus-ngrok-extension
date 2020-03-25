@@ -20,6 +20,7 @@ import javax.ws.rs.client.ClientBuilder;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 @ApplicationScoped
 public class NgrokRunner {
@@ -35,26 +36,32 @@ public class NgrokRunner {
     private Process process;
 
     public void start(@Observes StartupEvent ev) {
-        Thread thread = new Thread(() -> {
-            if (needToDownloadNgrok()) {
-                ngrokAutoDownload.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
-                addPermissionsIfNeeded();
-            }
-            startupNgrok(getPort());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            logNgrokResult(ngrokConfiguration.url());
-        }, "ngrok-thread");
+        System.out.println(ngrokConfiguration.enabled());
+        if (ngrokConfiguration.enabled()) {
+            Thread thread = new Thread(() -> {
+                if (needToDownloadNgrok()) {
+                    ngrokAutoDownload.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
+                    addPermissionsIfNeeded();
+                }
+                startupNgrok(getPort());
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                logNgrokResult(ngrokConfiguration.url());
+            }, "ngrok-thread");
+            thread.start();
+        }
+        log.info("Ngrok disabled");
 
-        thread.start();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
-        log.info("Stop ngrok");
-        process.destroy();
+        if (Objects.nonNull(process)) {
+            log.info("Stopping ngrok");
+            process.destroy();
+        }
     }
 
     private void startupNgrok(String port) {

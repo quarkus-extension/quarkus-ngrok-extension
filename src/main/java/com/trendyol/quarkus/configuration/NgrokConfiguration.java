@@ -5,8 +5,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.Optional;
 
-@ConfigProperties()
+@ConfigProperties
 public interface NgrokConfiguration {
+    @ConfigProperty(name = "enabled", defaultValue = "true")
+    Boolean enabled();
+
     @ConfigProperty(name = "windowsBinaryUrl", defaultValue = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip")
     String windowsBinaryUrl();
 
@@ -31,6 +34,6 @@ public interface NgrokConfiguration {
     @ConfigProperty(name = "directory")
     Optional<String> ngrokDirectory();
 
-    @ConfigProperty(name = "url", defaultValue = "http://localhost:4040")
+    @ConfigProperty(name = "http.url", defaultValue = "http://localhost:4040")
     String url();
 }
