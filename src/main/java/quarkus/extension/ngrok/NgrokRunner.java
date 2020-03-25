@@ -73,7 +73,7 @@ public class NgrokRunner {
         try {
             process = Runtime.getRuntime().exec(command);
         } catch (Exception e) {
-            log.error("Error occured when execute ngrok", e);
+            log.error("Error occurred when execute ngrok", e);
         }
     }
 
