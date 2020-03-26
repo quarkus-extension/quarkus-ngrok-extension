@@ -16,8 +16,19 @@ The ngrok extension is not available in Maven Central. For now you have to clone
 
 ```xml
 <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-ngrok</artifactId>
-      <version>1.3.0.Final</version>
+      <groupId>quarkus.extension</groupId>
+      <artifactId>ngrok</artifactId>
+      <version>0.0.1</version>
 </dependency>
+```
+### Configuration
+```xml
+ngrok.enabled=true
+ngrok.windowsBinaryUrl=string
+ngrok.linuxBinaryUrl=string
+ngrok.osxBinaryUrl=string
+ngrok.binaryCustom=string
+ngrok.directory=string
+ngrok.http.url=string
 
+```
