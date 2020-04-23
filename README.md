@@ -1,5 +1,10 @@
 # Quarkus Ngrok Extension
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.quarkus-extension/ngrok?color=green)](https://search.maven.org/artifact/com.github.quarkus-extension/ngrok)
+![Issues](https://img.shields.io/github/issues/quarkus-extension/quarkus-ngrok-extension)
+
+
+
 ##### What is Ngrok?
 Ngrok can create a http tunnel and give you a public URL with redirection to 
 specified port on your local machine, which in our case will be a standard springs `http://localhost:8080` 
@@ -11,8 +16,6 @@ For more details you can check out their [site](https://ngrok.com/).
 
 ### Dependency
 - maven:
-
-The ngrok extension is not available in Maven Central. For now you have to clone the repository and install the extension in your local maven repository.
 
 ```xml
 <dependency>
