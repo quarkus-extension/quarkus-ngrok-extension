@@ -1,8 +1,5 @@
 package quarkus.extension.ngrok.ngrok;
 
-import quarkus.extension.ngrok.configuration.NgrokConfiguration;
-import quarkus.extension.ngrok.data.NgrokTunnelResponse;
-import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -10,12 +7,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.logging.Logger;
+import quarkus.extension.ngrok.configuration.NgrokConfiguration;
+import quarkus.extension.ngrok.data.NgrokTunnelResponse;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,10 +22,12 @@ import java.util.Objects;
 @ApplicationScoped
 public class NgrokRunner {
     private static final Logger log = Logger.getLogger(NgrokRunner.class);
-    private Process process;
 
     @Inject
     private NgrokAutoDownload ngrokAutoDownload;
+
+    @Inject
+    private NgrokHttpClient httpClient;
 
     @Inject
     private NgrokConfiguration ngrokConfiguration;
@@ -36,28 +36,25 @@ public class NgrokRunner {
     public void start(@Observes StartupEvent ev) {
         if (ngrokConfiguration.enabled()) {
             Thread thread = new Thread(() -> {
-                if (needToDownloadNgrok()) {
-                    ngrokAutoDownload.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
-                    addPermissionsIfNeeded();
+                if (!checkNgrokRunning(ngrokConfiguration.url())) {
+                    if (needToDownloadNgrok()) {
+                        ngrokAutoDownload.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
+                        addPermissionsIfNeeded();
+                    }
+                    startupNgrok(getPort());
+                    try {
+                        Thread.sleep(ngrokConfiguration.waitTime());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    logNgrokResult(ngrokConfiguration.url());
+
                 }
-                startupNgrok(getPort());
-                try {
-                    Thread.sleep(ngrokConfiguration.waitTime());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                logNgrokResult(ngrokConfiguration.url());
+
             }, "ngrok-thread");
             thread.start();
         } else {
             log.info("Ngrok disabled");
-        }
-    }
-
-    void onStop(@Observes ShutdownEvent ev) {
-        if (Objects.nonNull(process)) {
-            log.info("Stopping ngrok");
-            process.destroy();
         }
     }
 
@@ -67,12 +64,15 @@ public class NgrokRunner {
     }
 
     private void execute(String command) {
+
         log.infof("Starting process command : %s", command);
+
         try {
-            process = Runtime.getRuntime().exec(command);
+            Runtime.getRuntime().exec(command);
         } catch (Exception e) {
             log.error("Error occurred when execute ngrok", e);
         }
+
     }
 
     private void addPermissionsIfNeeded() {
@@ -86,14 +86,35 @@ public class NgrokRunner {
     }
 
     private void logNgrokResult(String baseUrl) {
+        Response response;
 
         String tunnelEndpoint = baseUrl + "/api/tunnels";
-        Client client = ClientBuilder.newClient();
-        NgrokTunnelResponse response = client.target(tunnelEndpoint)
+        response = httpClient.getClient().target(tunnelEndpoint)
                 .request()
                 .accept("application/json")
-                .get(NgrokTunnelResponse.class);
-        response.getTunnels().forEach(t -> log.infof("Remote url (%s) -> %s", t.getProto(), t.getPublicUrl()));
+                .get();
+        NgrokTunnelResponse ngrokTunnelResponse = response.readEntity(NgrokTunnelResponse.class);
+        ngrokTunnelResponse.getTunnels().forEach(t -> log.infof("Remote url (%s) -> %s", t.getProto(), t.getPublicUrl()));
+        response.close();
+    }
+
+    private boolean checkNgrokRunning(String baseUrl) {
+        Response response = null;
+        try {
+            response = httpClient.getClient().target(baseUrl)
+                    .request()
+                    .accept("application/json")
+                    .get();
+        } catch (Exception e) {
+            log.warn("ngrok not running");
+        }
+
+        if (Objects.nonNull(response) && 302 == response.getStatus()) {
+            response.close();
+            return true;
+        }
+
+        return false;
     }
 
     private boolean needToDownloadNgrok() {
